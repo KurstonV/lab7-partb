@@ -21,7 +21,7 @@
                 const ip = data.ip;
 
                 // Step 2: Get location from IP
-                return fetch(`https://ipapi.co/${ip}/json/`);
+                return fetch(`https://ipapi.co/${190.197.113.236}/json/`);
             })
             .then(response => response.json())
             .then(locationData => {
@@ -38,7 +38,7 @@
                 document.getElementById('weather').textContent = `Weather based on IP: ${temperature}°C`;
 
                 // Step 4: Get weather using location
-                return fetch(`https://api.weatherapi.com/v1/current.json?key=YOUR_API_KEY&q=${weatherData.latitude},${weatherData.longitude}`);
+                return fetch(`https://api.weatherapi.com/v1/current.json?key=351ec9ff69bf481eb8b80826242411&q=${weatherData.latitude},${weatherData.longitude}`);
             })
             .then(response => response.json())
             .then(weatherDataByLocation => {
