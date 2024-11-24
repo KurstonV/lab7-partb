@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Calls Demo</title>
+</head>
+<body>
+    <h1>API Calls Demo</h1>
+    <p id="ip">Fetching your public IP...</p>
+    <p id="location">Fetching your location...</p>
+    <p id="weather">Fetching weather based on your IP...</p>
+    <p id="weatherByLocation">Fetching weather based on your location...</p>
+
+    <script>
+        // Step 1: Get public IP
+        fetch('https://api64.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('ip').textContent = `Your IP: ${data.ip}`;
+                const ip = data.ip;
+
+                // Step 2: Get location from IP
+                return fetch(`https://ipapi.co/${ip}/json/`);
+            })
+            .then(response => response.json())
+            .then(locationData => {
+                const { city, region, country } = locationData;
+                document.getElementById('location').textContent = `Location: ${city}, ${region}, ${country}`;
+                const location = `${city}, ${region}`;
+
+                // Step 3: Get weather based on IP location
+                return fetch(`https://api.open-meteo.com/v1/forecast?latitude=${locationData.latitude}&longitude=${locationData.longitude}&current_weather=true`);
+            })
+            .then(response => response.json())
+            .then(weatherData => {
+                const { temperature } = weatherData.current_weather;
+                document.getElementById('weather').textContent = `Weather based on IP: ${temperature}°C`;
+
+                // Step 4: Get weather using location
+                return fetch(`https://api.weatherapi.com/v1/current.json?key=YOUR_API_KEY&q=${weatherData.latitude},${weatherData.longitude}`);
+            })
+            .then(response => response.json())
+            .then(weatherDataByLocation => {
+                const { temp_c, condition } = weatherDataByLocation.current;
+                document.getElementById('weatherByLocation').textContent = `Weather by location: ${temp_c}°C, ${condition.text}`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    </script>
+</body>
+</html>
